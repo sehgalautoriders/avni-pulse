@@ -1,0 +1,3 @@
+.lease-token
+node_modules/
+*.log

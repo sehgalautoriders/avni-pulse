@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1A1F2B">
+<meta name="pulse-build" content="24-10-2026.1">
+<title>AVNI Pulse - presenter</title>
+<link rel="icon" href="img/pulse-icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/pulse.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="dot"></span>AVNI <b>Pulse</b> <span class="muted" style="color:#A0A5AD;font-weight:400">presenter</span></div>
+  <div class="spacer"></div>
+  <span class="live-state hidden" id="live-state"></span>
+  <button class="btn ghost small hidden" id="back-btn" type="button" style="color:#fff;border-color:#3a4252">All events</button>
+  <button class="btn small hidden" id="present-btn" type="button">Present</button>
+</header>
+
+<!-- 1. the list of my events -->
+<main id="home-view" class="wrap hidden">
+  <section class="card">
+    <h2>New event</h2>
+    <p class="muted">One event = one class or one workshop session. People join it with its 6-letter code.</p>
+    <form id="create-form" class="row">
+      <input class="input grow" id="new-title" maxlength="120" placeholder="For example: IIMK Marketing - Session 4" required>
+      <button class="btn" type="submit">Create event</button>
+    </form>
+    <div class="error hidden" id="create-error"></div>
+  </section>
+  <section class="card">
+    <h2>Your events</h2>
+    <ul class="event-list" id="event-list"></ul>
+  </section>
+  <section class="card">
+    <h3>Open an event from another computer</h3>
+    <p class="muted">Type the event code and its presenter key (shown under "Analytics" on the computer that made the event).</p>
+    <form id="open-form" class="row">
+      <input class="input" id="open-code" maxlength="6" placeholder="Code" style="max-width:140px;text-transform:uppercase" required>
+      <input class="input grow" id="open-key" maxlength="64" placeholder="Presenter key" required>
+      <button class="btn dark" type="submit">Open</button>
+    </form>
+    <div class="error hidden" id="open-error"></div>
+  </section>
+</main>
+
+<!-- 2. one event -->
+<div id="event-view" class="hidden">
+  <div class="host-grid">
+    <!-- left: join + activities -->
+    <aside>
+      <section class="card">
+        <h3 id="ev-title"></h3>
+        <div class="join-strip">
+          <div class="qr" id="qr" title="Show big for the projector"></div>
+          <div>
+            <div class="muted" style="font-size:13px">Join at</div>
+            <div class="join-url"><b id="join-url"></b></div>
+            <div class="join-code" id="join-code"></div>
+            <div class="muted" id="people"></div>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <h3>Add an activity</h3>
+        <form id="add-form">
+          <label class="field"><span>Type</span>
+            <select class="input" id="add-kind">
+              <option value="poll">Poll - multiple choice, results live</option>
+              <option value="quiz">Quiz - timed, with scores</option>
+              <option value="wordcloud">Word cloud - short answers</option>
+              <option value="survey">Survey - several questions</option>
+            </select>
+          </label>
+          <label class="field"><span id="add-q-label">Question</span>
+            <input class="input" id="add-q" maxlength="300" required>
+          </label>
+          <label class="field" id="add-opts-field"><span id="add-opts-label">Options, one per line</span>
+            <textarea class="input" id="add-opts" rows="4"></textarea>
+          </label>
+          <label class="field hidden" id="add-secs-field"><span>Seconds to answer</span>
+            <input class="input" id="add-secs" type="number" min="5" max="300" value="20">
+          </label>
+          <button class="btn" type="submit">Add</button>
+          <div class="error hidden" id="add-error"></div>
+        </form>
+      </section>
+      <section class="card">
+        <h3>Activities</h3>
+        <ul class="items" id="items"></ul>
+      </section>
+    </aside>
+
+    <!-- middle: what is on the phones now -->
+    <section class="stage-col">
+      <div class="mini-tabs" id="view-tabs">
+        <button class="is-on" data-view="stage" type="button">On the phones now</button>
+        <button data-view="board" type="button">Leaderboard</button>
+        <button data-view="stats" type="button">Analytics</button>
+      </div>
+      <div class="card stage" id="stage"></div>
+      <div class="card hidden" id="board-view"><h2>Quiz leaderboard</h2><div id="board"></div></div>
+      <div class="card hidden" id="stats-view"></div>
+    </section>
+
+    <!-- right: Q&A -->
+    <aside class="qa-col">
+      <section class="card">
+        <div class="row" style="margin-bottom:8px">
+          <h3 class="grow" style="margin:0">Q&amp;A</h3>
+          <button class="btn ghost small" id="qa-toggle" type="button"></button>
+        </div>
+        <div class="mini-tabs" id="qa-tabs">
+          <button class="is-on" data-f="top" type="button">Popular</button>
+          <button data-f="new" type="button">Recent</button>
+          <button data-f="answered" type="button">Answered</button>
+          <button data-f="hidden" type="button">Hidden</button>
+        </div>
+        <ul class="qa-list" id="qa-list"></ul>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<div class="overlay hidden" id="overlay">
+  <button class="btn ghost close" id="overlay-close" type="button" style="color:#fff;border-color:#3a4252">Close</button>
+  <div class="big-join">
+    <div class="qr" id="qr-big"></div>
+    <div style="font-size:min(4vh,5vw)">Join at <b id="big-url"></b></div>
+    <div class="code" id="big-code"></div>
+  </div>
+</div>
+<script type="module" src="js/host.js"></script>
+</body>
+</html>

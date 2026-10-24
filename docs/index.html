@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1A1F2B">
+<meta name="pulse-build" content="24-10-2026.1">
+<title>AVNI Pulse - join</title>
+<link rel="icon" href="img/pulse-icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/pulse.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="dot"></span>AVNI <b>Pulse</b></div>
+  <div class="spacer"></div>
+  <span class="live-state hidden" id="live-state"></span>
+</header>
+
+<main class="wrap">
+  <!-- 1. enter the code -->
+  <section id="join-view" class="card hidden">
+    <h2>Join the session</h2>
+    <p class="muted">Type the code shown on the screen. No sign-in needed.</p>
+    <form id="join-form">
+      <label class="field"><span>Event code</span>
+        <input class="input code-input" id="code" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" required>
+      </label>
+      <button class="btn" style="width:100%" type="submit">Join</button>
+    </form>
+    <div class="error hidden" id="join-error"></div>
+  </section>
+
+  <!-- 2. inside the event -->
+  <section id="event-view" class="hidden">
+    <div class="card">
+      <h2 id="ev-title"></h2>
+      <div class="row">
+        <span class="muted grow" id="ev-people"></span>
+        <button class="btn ghost small" id="name-btn" type="button">Your name</button>
+      </div>
+      <form id="name-form" class="hidden" style="margin-top:10px">
+        <label class="field"><span>Your name for the quiz leaderboard (leave empty to stay anonymous)</span>
+          <input class="input" id="nickname" maxlength="40" autocomplete="nickname">
+        </label>
+        <button class="btn small" type="submit">Save name</button>
+      </form>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab is-on" data-tab="live" type="button">Live</button>
+      <button class="tab" data-tab="qa" type="button">Q&amp;A <span id="qa-count"></span></button>
+    </div>
+
+    <div id="tab-live">
+      <div class="card" id="live-card"></div>
+      <div class="card hidden" id="board-card">
+        <h3>Quiz leaderboard</h3>
+        <p class="muted" id="my-rank"></p>
+        <div id="board"></div>
+      </div>
+    </div>
+
+    <div id="tab-qa" class="hidden">
+      <div class="card">
+        <form id="ask-form">
+          <label class="field"><span>Ask the speaker</span>
+            <textarea class="input" id="ask-text" rows="3" maxlength="300" required placeholder="Type your question"></textarea>
+          </label>
+          <label class="field"><span>Your name (leave empty to stay anonymous)</span>
+            <input class="input" id="ask-name" maxlength="40">
+          </label>
+          <button class="btn" type="submit">Send question</button>
+        </form>
+        <div class="error hidden" id="ask-error"></div>
+        <p class="muted hidden" id="qa-closed">Questions are closed for now.</p>
+      </div>
+      <div class="mini-tabs" id="qa-sort">
+        <button class="is-on" data-sort="top" type="button">Popular</button>
+        <button data-sort="new" type="button">Recent</button>
+      </div>
+      <ul class="qa-list" id="qa-list"></ul>
+    </div>
+  </section>
+</main>
+<script type="module" src="js/join.js"></script>
+</body>
+</html>
